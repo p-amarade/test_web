@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Q · QR Code</title>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@600&family=IBM+Plex+Sans+Thai:wght@400;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  :root{--bg:#E9EDF3;--ink:#1B2A41;--sub:#5C6B80;--key:#fff;--edge:#C9D2DE;--accent:#FF6B5E}
+  *{box-sizing:border-box;margin:0}
+  body{font-family:'IBM Plex Sans Thai',sans-serif;background:var(--bg);color:var(--ink);
+    min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:48px 20px}
+  a.back{align-self:flex-start;max-width:520px;width:100%;margin:0 auto 24px;
+    color:var(--sub);text-decoration:none;font-size:.9rem}
+  a.back:hover{color:var(--accent)}
+  h1{font-family:'IBM Plex Mono',monospace;font-size:1.2rem;margin-bottom:24px}
+  h1 b{color:var(--accent)}
+  .card{background:var(--key);border:1px solid var(--edge);border-radius:14px;
+    box-shadow:0 4px 0 var(--edge);padding:24px;width:100%;max-width:520px}
+  textarea{width:100%;font:inherit;padding:12px;border:1px solid var(--edge);
+    border-radius:10px;resize:vertical;min-height:80px}
+  textarea:focus{outline:2px solid var(--accent);border-color:transparent}
+  button{margin-top:14px;width:100%;padding:12px;font:inherit;font-weight:600;
+    background:var(--ink);color:#fff;border:0;border-radius:10px;cursor:pointer}
+  button:hover{background:var(--accent)}
+  #out{margin-top:24px;display:flex;justify-content:center;min-height:0}
+  #out img,#out canvas{border-radius:8px}
+  .hint{margin-top:12px;font-size:.8rem;color:var(--sub);text-align:center}
+</style>
+</head>
+<body>
+  <a class="back" href="/">← playground</a>
+  <h1><b>Q</b> · QR Code Generator</h1>
+  <div class="card">
+    <textarea id="text" placeholder="พิมพ์ข้อความหรือวางลิงก์ที่นี่…"></textarea>
+    <button onclick="makeQR()">สร้าง QR Code</button>
+    <div id="out"></div>
+    <p class="hint" id="hint"></p>
+  </div>
+<script>
+function makeQR(){
+  const t=document.getElementById('text').value.trim();
+  const out=document.getElementById('out');
+  const hint=document.getElementById('hint');
+  out.innerHTML=''; hint.textContent='';
+  if(!t){hint.textContent='พิมพ์ข้อความก่อน แล้วกดสร้างอีกครั้ง';return;}
+  new QRCode(out,{text:t,width:220,height:220,correctLevel:QRCode.CorrectLevel.M});
+  hint.textContent='กดค้าง (มือถือ) หรือคลิกขวา (คอม) ที่รูปเพื่อบันทึก';
+}
+document.getElementById('text').addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();makeQR();}
+});
+</script>
+</body>
+</html>
